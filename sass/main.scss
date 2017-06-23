@@ -1,0 +1,114 @@
+html {
+	height:100%;
+	font-size: 150%;
+}
+body.blue-bg {
+	height:100%;
+	background-color: #34495e;
+}
+.app-wrap {
+	max-width: 980px;
+	margin:0 auto;
+}
+	.number-display{
+		background:#222e3c;
+		padding:0.5em 0;
+		text-align: center;
+		color:#fff;
+		min-height: 2.5em;
+		font-size: 2em;
+    	word-wrap: break-word;
+    	.call-time {
+			color:#bbbbbb;
+    		font-size: 0.35em;
+    	}
+	}
+
+	.pad-container {
+		background: #495c6e;
+		padding:1px;
+		margin-left:0 !important;
+		margin-right:0 !important;
+
+		.pad-item { 
+		   padding-left:0;
+		   padding-right:0;
+		   width: 33.33%;
+		   font-size: 1em;
+
+			a {
+				background-color:#2a3a4b; 
+				padding:20px; 
+				text-align:center; 
+				color:#bbbbbb; 
+				text-decoration: none;
+				font-weight: bold; 
+				display: block;
+				margin:1px;
+			}
+			a:active, a:visited, a:hover {
+				background:#222e3c;
+				color:#fff;
+			}
+
+		}
+
+	}
+
+		.btn-success, .btn-danger {
+			width: 50%;
+			text-align: center;
+			font-size:1.5em !important;
+			padding: 0.3em !important;
+		}
+
+	.dial-container {
+		background: #34495e;
+		padding: 20px;
+
+	}
+
+	.report {
+		font-size: 1.5em;
+		color:#fff;
+		padding:0.5em;
+		text-align: center;
+		h3 {
+			font-size:2em;
+		}
+		h4 {
+			font-size: 1.2em;
+		}
+	}
+
+@media only screen and (min-height: 779px) {
+	.pad-container {
+		.pad-item { 
+			font-size: 2em;
+		}
+	}
+		.number-display{
+			font-size: 3em;
+		}
+
+		.btn-success, .btn-danger {
+			font-size:2em !important;
+			padding: 0.4em !important;
+		}
+}
+@media only screen and (min-height: 1280px) {
+	.pad-container {
+		.pad-item { 
+			font-size: 4em;
+		}
+	}
+		.number-display{
+			font-size: 5em;
+		}
+
+		.btn-success, .btn-danger {
+			padding: 0.5em !important;
+			font-size:2.5em !important;
+		}
+	
+}

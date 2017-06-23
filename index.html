@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<link href="css/main.min.css" rel="stylesheet" type="text/css" />
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script src="js/angular.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/tether.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<body class="blue-bg">
+
+
+<div class="app-wrap" ng-app="myApp" >
+<div ng-controller="myCtrl">
+
+	<div ng-hide="state">
+		<div class="number-display">{{number}}</div>
+		<div class="row pad-container" >
+			<div ng-repeat="i in [1,2,3,4,5,6,7,8,9,'*',0,'#']" class="pad-item">
+				<a href="javascript:void(0)" ng-click="addNumber(i)" class="{{i}}" >{{i}}</a>
+			</div>
+		</div>
+		<div class="dial-container text-center"><a href="" class="btn btn-success btn-large" ng-click="dialPhone()">Dial</a></div>
+	</div>
+
+	<div ng-show="state" class="ng-hide">
+		<div ng-hide="report">
+			<div class="number-display">
+				<div class="call-time">Call time: <span>{{calltime}}</span></div>
+				<span>{{number}}</span>
+			</div>
+			<div class="dial-container text-center"><a href="" class="btn btn-danger btn-large" ng-click="showReport()">Hangup</a></div>
+		</div>
+		<div ng-show="report" class="ng-hide">
+			<div class="report">
+				<h4>{{totalcalls}} total calls made</h4>
+				<h3>Top 3 calls:</h3>
+				<div ng-repeat="call in calls | toArray | orderBy:'-count' | limitTo:topcalls " >
+					#{{call.number}} Duration: {{call.time}} Count: {{ call.count}}
+					
+				</div>
+			</div>
+			<div class="dial-container text-center"><a href="" class="btn btn-danger btn-large" ng-click="hangupPhone()">Back</a></div>
+		</div>
+	</div>
+
+</div>
+</div>
+<script>
+
+
+var app = angular.module('myApp', []);
+app.controller('myCtrl',['$scope','$interval', function($scope,$interval) {
+    $scope.number= "";
+    $scope.state = false;
+    $scope.calls = {};
+    $scope.report = false;
+    $scope.addNumber = function(button){
+    	$scope.number = $scope.number+button;
+    }
+    var stop;
+    var seconds =0;
+    $scope.callid= 0;
+    $scope.totalcalls =0;
+    $scope.calltime ='00:00:00';
+    $scope.dialPhone = function(){
+    	$scope.state = true;	
+    	$scope.callid++;
+    	 stop = $interval(function() {
+    	 	seconds++;
+		    var minutes =0;
+		    var hours =0;
+    	 	if(seconds>=3600){ hours = parseInt(seconds/3600); }
+    	 	if(seconds>=60){ minutes = parseInt(seconds/60)-parseInt(hours*60); }
+    	 	var secondsTime = seconds - parseInt(minutes*60)-parseInt(hours*3600);
+    	 	if(hours<10) hours = '0'+hours;
+    	 	if(minutes<10) minutes = '0'+minutes;
+    	 	if(secondsTime<10) secondsTime = '0'+secondsTime;
+    	 	$scope.calltime = hours+':'+minutes+':'+secondsTime;
+          }, 1000);
+    }
+    $scope.showReport = function(){
+    	var count = 1;
+    	if($scope.calls[parseFloat($scope.number)]!=undefined){
+    		var count = $scope.calls[parseFloat($scope.number)].count +1;
+    	}
+    	$scope.calls[parseFloat($scope.number)] = { time:$scope.calltime, number:$scope.number,count:count};
+    	$scope.topcalls = 3;
+    	$scope.report = true;
+    	$interval.cancel(stop);
+    	seconds =0;
+    	$scope.totalcalls++;
+    	$scope.calltime ='00:00:00';
+    }
+    $scope.hangupPhone = function(){
+    	$scope.state = false;
+    	$scope.report = false;
+    	$scope.number ='';
+    }
+}]);
+
+app.filter("toArray", function(){
+    return function(obj) {
+        var result = [];
+        angular.forEach(obj, function(val, key) {
+            result.push(val);
+        });
+         return result.reverse();
+    };
+});
+
+
+</script>
+
+</body>
+</html>
